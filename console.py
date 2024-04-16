@@ -149,7 +149,7 @@ class HBNBCommand(cmd.Cmd):
                     print("not int")
                     continue
             kwargs[k] = v
-            
+
         new_instance = HBNBCommand.classes[argslist[0]](**kwargs)
         new_instance.save()
         print(new_instance.id)

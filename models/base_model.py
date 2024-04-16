@@ -30,9 +30,6 @@ class BaseModel:
                 self.updated_at = datetime.today()
             if "created_at" not in kwargs:
                 self.created_at = datetime.today()
-        else:
-            pass
-
 
     def __str__(self):
         """Returns a string representation of the instance"""
