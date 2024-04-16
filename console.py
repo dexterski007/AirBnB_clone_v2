@@ -3,7 +3,7 @@
 import cmd
 import sys
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -115,23 +115,41 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        try:
-            if not args:
-                raise SyntaxError()
-            argslist = args.split(" ")
-            kwargs = {}
-            argstail = argslist[1:]
-            for arg in argstail:
-                params = arg.split("=")
-                params[1] = eval(params[1])
-                if type(params[1]) is str:
-                    params[1] = params[1].replace('"', '\\"').\
-                    replace("_", " ")
-                kwargs[params[0]] = params[1]
-        except SyntaxError:
+        if not args:
             print("** class name missing **")
-        except NameError:
+            return
+        argslist = args.split(" ")
+        class_name = argslist[0]
+
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
+            return
+
+        kwargs = {}
+        for arg in argslist[1:]:
+            params = arg.split('=')
+            if len(params) != 2:
+                print("invalid format")
+                continue
+            k = params[0]
+            v = params[1]
+
+            if v.startswith('"') and v.endswith('"'):
+                v = v[1:-1].replace('_', ' ')
+            elif '.' in v:
+                try:
+                    v = float(v)
+                except ValueError:
+                    print("not float")
+                    continue
+            else:
+                try:
+                    v = int(v)
+                except ValueError:
+                    print("not int")
+                    continue
+            kwargs[k] = v
+            
         new_instance = HBNBCommand.classes[argslist[0]](**kwargs)
         new_instance.save()
         print(new_instance.id)
@@ -328,6 +346,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
