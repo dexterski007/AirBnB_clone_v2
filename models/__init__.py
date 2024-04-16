@@ -12,11 +12,11 @@ from models.review import Review
 st_type = getenv("HBNB_TYPE_STORAGE")
 
 if st_type == "db":
-	from models.engine.db_storage import DBStorage
-	storage = DBStorage()
-	storage.reload()
+    from models.engine.db_storage import DBStorage
+    storage = DBStorage()
+    storage.reload()
 
 else:
-	from models.engine.file_storage import FileStorage
-	storage = FileStorage()
-	storage.reload()
+    from models.engine.file_storage import FileStorage
+    storage = FileStorage()
+    storage.reload()
