@@ -8,11 +8,12 @@ from sqlalchemy import Column, String, Integer, ForeignKey, Float, Table
 from sqlalchemy.orm import relationship
 
 
-place_amenity = Table("place_amenity", Base.metadata,\
+place_amenity = Table("place_amenity", Base.metadata,
                       Column("place_id", String(60), ForeignKey("places.id"),
-                      primary_key=True, nullable=False), Column("amenity_id",
-                      String(60), ForeignKey("amenities.id"), primary_key=True,
-                      nullable=False))
+                             primary_key=True, nullable=False),
+                      Column("amenity_id", String(60),
+                             ForeignKey("amenities.id"), primary_key=True,
+                             nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -31,10 +32,11 @@ class Place(BaseModel, Base):
     amenity_ids = []
 
     if getenv("HBNB_TYPE_STORAGE") == "db":
-        reviews = relationship("Review", cascade='all, delete-orphan',\
-                                backref="place")
-        amenities = relationship("Amenity", secondary=place_amenity,\
-                                 viewonly=False, back_populates="place_amenities")
+        reviews = relationship("Review", cascade='all, delete-orphan',
+                               backref="place")
+        amenities = relationship("Amenity", secondary=place_amenity,
+                                 viewonly=False,
+                                 back_populates="place_amenities")
 
     else:
         @property
