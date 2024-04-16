@@ -2,6 +2,7 @@
 """This module defines a base class for all models in our hbnb clone"""
 import uuid
 from datetime import datetime
+import models
 
 
 class BaseModel:
@@ -12,7 +13,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-        else:
+        elif kwargs:
             for k, v in kwargs.items():
                 if k == "updated_at":
                     v = datetime.strptime(kwargs['updated_at'],
@@ -29,11 +30,14 @@ class BaseModel:
                 self.updated_at = datetime.today()
             if "created_at" not in kwargs:
                 self.created_at = datetime.today()
+        else:
+            pass
 
 
     def __str__(self):
         """Returns a string representation of the instance"""
-        return '[{}] ({}) {}'.format(type(self).__name__, self.id, self.__dict__)
+        return '[{}] ({}) {}'.format(
+            type(self).__name__, self.id, self.__dict__)
 
     def _repr__(self):
         """ return a string representation of the instance """
@@ -41,17 +45,18 @@ class BaseModel:
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
-        from models import storage
         self.updated_at = datetime.now()
-        storage.new(self)
-        storage.save()
+        models.storage.new(self)
+        models.storage.save()
 
     def to_dict(self):
         """Convert instance into dict format"""
-        dictionary = {}
-        dictionary.update(self.__dict__)
-        dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
+        dictionary = dict(self.__dict__)
+        dictionary["__class__"] = str(type(self).__name__)
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         return dictionary
+
+    def delete(self):
+        """ delete object """
+        models.storage.delete(self)
