@@ -99,3 +99,6 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(storage_t != 'db', "skip db test")
     def test_save(self):
         """ """
+
+if __name__ == "__main__":
+    unittest.main()
