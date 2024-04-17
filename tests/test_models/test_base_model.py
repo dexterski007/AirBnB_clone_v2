@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" """
+""" testing stuff yeah"""
 from models.base_model import BaseModel
 import unittest
 import datetime
@@ -10,24 +10,24 @@ import pycodestyle
 
 
 class test_basemodel(unittest.TestCase):
-    """ """
+    """ testing stuff yeah"""
 
     def __init__(self, *args, **kwargs):
-        """ """
+        """ testing stuff yeah"""
         super().__init__(*args, **kwargs)
         self.name = 'BaseModel'
         self.value = BaseModel
 
-        """ test pep8 """
+        """ testing stuff yeahtest pep8 """
     def test_pep8(self):
-        """ test pycodestyle """
+        """ testing stuff yeahtest pycodestyle """
         pyco = pycodestyle.Styleguide(quiet=True)
         diff = pycodestyle.check_files(['models/base_model.py'])
         self.assertEqual(diff.total_errors, 0,
                          "Errors detected in pycodestyle")
 
     def setUp(self):
-        """ """
+        """ testing stuff yeah"""
         pass
 
     def tearDown(self):
@@ -37,19 +37,19 @@ class test_basemodel(unittest.TestCase):
             pass
 
     def test_default(self):
-        """ """
+        """ testing stuff yeah"""
         i = self.value()
         self.assertEqual(type(i), self.value)
 
     def test_kwargs(self):
-        """ """
+        """ testing stuff yeah"""
         i = self.value()
         copy = i.to_dict()
         new = BaseModel(**copy)
         self.assertFalse(new is i)
 
     def test_kwargs_int(self):
-        """ """
+        """ testing stuff yeah"""
         i = self.value()
         copy = i.to_dict()
         copy.update({1: 2})
@@ -57,7 +57,7 @@ class test_basemodel(unittest.TestCase):
             new = BaseModel(**copy)
 
     def test_save(self):
-        """ Testing save """
+        """ testing stuff yeahTesting save """
         i = self.value()
         i.save()
         key = self.name + "." + i.id
@@ -66,35 +66,35 @@ class test_basemodel(unittest.TestCase):
             self.assertEqual(j[key], i.to_dict())
 
     def test_str(self):
-        """ """
+        """ testing stuff yeah"""
         i = self.value()
         self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
                          i.__dict__))
 
     def test_todict(self):
-        """ """
+        """ testing stuff yeah"""
         i = self.value()
         n = i.to_dict()
         self.assertEqual(i.to_dict(), n)
 
     def test_kwargs_none(self):
-        """ """
+        """ testing stuff yeah"""
         n = {None: None}
         with self.assertRaises(TypeError):
             new = self.value(**n)
 
     def test_id(self):
-        """ """
+        """ testing stuff yeah"""
         new = self.value()
         self.assertEqual(type(new.id), str)
 
     def test_created_at(self):
-        """ """
+        """ testing stuff yeah"""
         new = self.value()
         self.assertEqual(type(new.created_at), datetime.datetime)
 
     def test_updated_at(self):
-        """ """
+        """ testing stuff yeah"""
         new = self.value()
         self.assertEqual(type(new.updated_at), datetime.datetime)
         n = new.to_dict()
@@ -102,7 +102,7 @@ class test_basemodel(unittest.TestCase):
         self.assertFalse(new.created_at == new.updated_at)
 
     def testing_uuid(self):
-        """  """
+        """ testing stuff yeah """
         inst1 = BaseModel()
         inst2 = BaseModel()
         inst3 = BaseModel()
@@ -116,59 +116,59 @@ class test_basemodel(unittest.TestCase):
         self.assertNotEqual(inst2.id, inst3.id)
 
     def test_string_method(self):
-        """ """
+        """ testing stuff yeah"""
         inst6 = BaseModel()
         string = "[BaseModel] ({}) {}".format(inst6.id, inst6.__dict__)
         self.assertEqual(string, str(inst6))
 
 
 class TestFormat(unittest.TestCase):
-    """ """
+    """ testing stuff yeah"""
     def test_pycodestylepep8(self):
-        """ """
+        """ testing stuff yeah"""
         pycostl = pycodestyle.StyleGuide(quiet=True)
         result = pycostl.check_files(['models/base_model.py'])
         self.assertEqual(result.total_errors, 0, "Pycodestyle check error")
 
 
 class Test_docstrings(unittest.TestCase):
-    """ check docstrings """
+    """ testing stuff yeahcheck docstrings """
     @classmethod
     def setup_class(self):
-        """ """
+        """ testing stuff yeah"""
         self.obj_members(BaseModel, inspect.isfunction)
 
 
 class TestBaseModel(unittest.TestCase):
-    """ test basemodel"""
+    """ testing stuff yeahtest basemodel"""
 
     @classmethod
     def setUpClass(cls):
-        """ setup """
+        """ testing stuff yeahsetup """
         cls.base = BaseModel()
         cls.base.name = "holb"
         cls.base.num = 20
 
     @classmethod
     def teardown(cls):
-        """ """
+        """ testing stuff yeah"""
         del cls.base
 
     def tearDown(self):
-        """ """
+        """ testing stuff yeah"""
         try:
             os.remove("file.json")
         except Exception:
             pass
 
     def test_pep8_BaseModel(self):
-        """ test pep8 """
+        """ testing stuff yeahtest pep8 """
         style = pep8.StyleGuide(quiet=True)
         pep = style.check_files(['models/base_model.py'])
         self.assertEqual(p.total_errors, 0, "pep8 errors")
 
     def test_check_docstring_BaseModel(self):
-        """ check docstrings """
+        """ testing stuff yeahcheck docstrings """
         self.assertIsNotNone(BaseModel.__doc__)
         self.assertIsNotNone(BaseModel.__init__.__doc__)
         self.assertIsNotNone(BaseModel.__str__.__doc__)
@@ -176,22 +176,22 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsNotNone(BaseModel.to_dict.__doc__)
 
     def test_method_BaseModel(self):
-        """ check methods """
+        """ testing stuff yeahcheck methods """
         self.assertTrue(hasattr(BaseModel, "__init__"))
         self.assertTrue(hasattr(BaseModel, "save"))
         self.assertTrue(hasattr(BaseModel, "to_dict"))
 
     def test_init_BaseModel(self):
-        """ check if basemdel """
+        """ testing stuff yeahcheck if basemdel """
         self.assertTrue(isinstance(self.base, BaseModel))
 
     def test_save_BaseModel(self):
-        """ check for save """
+        """ testing stuff yeahcheck for save """
         self.base.save()
         self.assertNotEqual(self.base.created_at, self.base.updated_at)
 
     def test_to_dict_BaseModel(self):
-        """ check to dict """
+        """ testing stuff yeahcheck to dict """
         base_dict = self.base.to_dict()
         self.assertEqual(self.base.__class__.__name__, 'BaseModel')
         self.assertIsInstance(base_dict['created_at'], str)

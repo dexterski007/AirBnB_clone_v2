@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Module for testing db storage"""
+""" testing stuff yeahModule for testing db storage"""
 import pep8
 import models
 import MySQLdb
@@ -26,57 +26,57 @@ storage_t = os.getenv("HBNB_TYPE_STORAGE")
 
 
 class TestDBStoragedocstringunittest.TestCase):
-    """ """
+    """ testing stuff yeah"""
     @classmethod
     def setUpClass(cls):
-        """ """
+        """ testing stuff yeah"""
         cls.dbs_f = inspect.getmembers(DBStorage, inspect.isfunction)
 
     def test_pep8_conformance_db_storage(self):
-        """ """
+        """ testing stuff yeah"""
         pep8doc = pycodestyle.StyleGuide(quiet=True)
         results = pep8doc.check_files(['models/engine/db_storage.py'])
         self.assertEqual(results.total_errors, 0, "pep8 erros")
 
     def test_pep8_conformance_test_db_storage(self):
-        """ """
+        """ testing stuff yeah"""
         pep8doc = pycodestyle.StyleGuide(quiet=True)
         results = pep8doc.check_files(['tests/test_models/test_engine/\
                                       test_db_storage.py'])
         self.assertEqual(results.total_errors, 0, "pep8 errors")
 
 class TestDBStorageDocs(unittest.TestCase):
-    """ """
+    """ testing stuff yeah"""
     @classmethod
     def setUpClass(cls):
-        """ """
+        """ testing stuff yeah"""
         cls.dbs_f = inspect.getmembers(DBStorage, inspect.isfunction)
 
     def test_pep8_conformance_db_storage(self):
-        """ """
+        """ testing stuff yeah"""
         pep8doc = pycodestyle.StyleGuide(quiet=True)
         results = pep8doc.check_files(['models/engine/db_storage.py'])
         self.assertEqual(results.total_errors, 0, "pep8 errors")
 
     def test_pep8_conformance_test_db_storage(self):
-        """ """
+        """ testing stuff yeah"""
         pep8doc = pycodestyle.StyleGuide(quiet=True)
         results = pep8doc.check_files(['tests/test_models/test_engine/\
                                       test_db_storage.py'])
         self.assertEqual(results.total_errors, 0, "pep8 errors")
 
     def test_db_st_module_docstring(self):
-        """ """
+        """ testing stuff yeah"""
         self.assertIsNot(db_storage.__doc__, None, "db_storage.py miss docs")
         self.assertTrue(len(db_storage.__doc__) >= 1, "db_storage.py - docs")
 
     def test_db_st_class_docstring(self):
-        """ """
+        """ testing stuff yeah"""
         self.assertIsNot(DBStorage.__doc__, None, "DBStorage class miss docs")
         self.assertTrue(len(DBStorage.__doc__) >= 1, "DBStorage class - docs")
 
     def test_dbs_func_docstrings(self):
-        """ """
+        """ testing stuff yeah"""
         for func in self.dbs_f:
             self.assertIsNot(func[1].__doc__, None,
                              "{:s} method missing docstring".format(func[0]))
@@ -85,11 +85,11 @@ class TestDBStorageDocs(unittest.TestCase):
 
 
 class TestDBStoragewithmsql(unittest.TestCase):
-    """ """
+    """ testing stuff yeah"""
 
     @classmethod
     def setUpClass(cls):
-        """ """
+        """ testing stuff yeah"""
         if type(models.storage) == DBStorage:
             cls.storage = DBStorage()
             Base.metadata.create_all(cls.storage._DBStorage__engine)
@@ -113,7 +113,7 @@ class TestDBStoragewithmsql(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        """ """
+        """ testing stuff yeah"""
         if type(models.storage) == DBStorage:
             cls.storage._DBStorage__session.delete(cls.state)
             cls.storage._DBStorage__session.delete(cls.city)
@@ -130,13 +130,13 @@ class TestDBStoragewithmsql(unittest.TestCase):
             del cls.storage
 
     def test_pep8(self):
-        """ """
+        """ testing stuff yeah"""
         style = pep8.StyleGuide(quiet=True)
         p = style.check_files(['models/engine/db_storage.py'])
         self.assertEqual(p.total_errors, 0, "fix pep8")
 
     def test_docstrings(self):
-        """ """
+        """ testing stuff yeah"""
         self.assertIsNotNone(DBStorage.__doc__)
         self.assertIsNotNone(DBStorage.__init__.__doc__)
         self.assertIsNotNone(DBStorage.all.__doc__)
@@ -148,12 +148,12 @@ class TestDBStoragewithmsql(unittest.TestCase):
     @unittest.skipIf(type(models.storage) == FileStorage,
                      "json test")
     def test_attributes(self):
-        """ """
+        """ testing stuff yeah"""
         self.assertTrue(isinstance(self.storage._DBStorage__engine, Engine))
         self.assertTrue(isinstance(self.storage._DBStorage__session, Session))
 
     def test_methods(self):
-        """ """
+        """ testing stuff yeah"""
         self.assertTrue(hasattr(DBStorage, "__init__"))
         self.assertTrue(hasattr(DBStorage, "all"))
         self.assertTrue(hasattr(DBStorage, "new"))
@@ -164,13 +164,13 @@ class TestDBStoragewithmsql(unittest.TestCase):
     @unittest.skipIf(type(models.storage) == FileStorage,
                      "json test")
     def test_init(self):
-        """ """
+        """ testing stuff yeah"""
         self.assertTrue(isinstance(self.storage, DBStorage))
 
     @unittest.skipIf(type(models.storage) == FileStorage,
                      "json test")
     def test_all(self):
-        """ """
+        """ testing stuff yeah"""
         obj = self.storage.all()
         self.assertEqual(type(obj), dict)
         self.assertEqual(len(obj), 6)
@@ -178,7 +178,7 @@ class TestDBStoragewithmsql(unittest.TestCase):
     @unittest.skipIf(type(models.storage) == FileStorage,
                      "json test")
     def test_all_cls(self):
-        """ """
+        """ testing stuff yeah"""
         obj = self.storage.all(State)
         self.assertEqual(type(obj), dict)
         self.assertEqual(len(obj), 1)
@@ -187,7 +187,7 @@ class TestDBStoragewithmsql(unittest.TestCase):
     @unittest.skipIf(type(models.storage) == FileStorage,
                      "json test")
     def test_new(self):
-        """ """
+        """ testing stuff yeah"""
         st = State(name="new_hampshite")
         self.storage.new(st)
         store = list(self.storage._DBStorage__session.new)
@@ -196,7 +196,7 @@ class TestDBStoragewithmsql(unittest.TestCase):
     @unittest.skipIf(type(models.storage) == FileStorage,
                      "json test")
     def test_save(self):
-        """ test save"""
+        """ testing stuff yeahtest save"""
         st = State(name="losalamos")
         self.storage._DBStorage__session.add(st)
         self.storage.save()
@@ -213,7 +213,7 @@ class TestDBStoragewithmsql(unittest.TestCase):
     @unittest.skipIf(type(models.storage) == FileStorage,
                      "json test")
     def test_delete(self):
-        """  """
+        """ testing stuff yeah """
         st = State(name="new_hampshite")
         self.storage._DBStorage__session.add(st)
         self.storage._DBStorage__session.commit()
@@ -223,7 +223,7 @@ class TestDBStoragewithmsql(unittest.TestCase):
     @unittest.skipIf(type(models.storage) == FileStorage,
                      "json test")
     def test_delete_none(self):
-        """ """
+        """ testing stuff yeah"""
         try:
             self.storage.delete(None)
         except Exception:
@@ -242,23 +242,23 @@ class TestDBStoragewithmsql(unittest.TestCase):
 
 
 class TestFileStorage(unittest.TestCase):
-    """ """
+    """ testing stuff yeah"""
     @unittest.skipIf(storage_t != 'db', "skip db test")
     def test_all_returns_dict(self):
-        """ """
+        """ testing stuff yeah"""
         self.assertIs(type(models.storage.all()), dict)
 
     @unittest.skipIf(storage_t != 'db', "skip db test")
     def test_all_no_class(self):
-        """ """
+        """ testing stuff yeah"""
 
     @unittest.skipIf(storage_t != 'db', "skip db test")
     def test_new(self):
-        """ """
+        """ testing stuff yeah"""
 
     @unittest.skipIf(storage_t != 'db', "skip db test")
     def test_save(self):
-        """ """
+        """ testing stuff yeah"""
 
 if __name__ == "__main__":
     unittest.main()
