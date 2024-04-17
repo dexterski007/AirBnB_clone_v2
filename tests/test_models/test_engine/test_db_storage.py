@@ -196,7 +196,7 @@ class TestDBStoragewithmsql(unittest.TestCase):
     @unittest.skipIf(type(models.storage) == FileStorage,
                      "json test")
     def test_save(self):
-        """Test save method."""
+        """ test save"""
         st = State(name="losalamos")
         self.storage._DBStorage__session.add(st)
         self.storage.save()
