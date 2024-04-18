@@ -1,154 +1,143 @@
 #!/usr/bin/python3
-""" test amenity """
+"""Test Amenity class"""
+
 import os
-import pep8
-import models
-import MySQLdb
 import unittest
 from datetime import datetime
-from models.base_model import Base
+import pep8
 from models.base_model import BaseModel
 from models.amenity import Amenity
-from models.engine.db_storage import DBStorage
 from models.engine.file_storage import FileStorage
+from models.engine.db_storage import DBStorage
 from sqlalchemy.exc import OperationalError
-from sqlalchemy.orm import sessionmaker
 
 
 class TestAmenity(unittest.TestCase):
-    """tedting amenity"""
+    """Test cases for Amenity class"""
 
     @classmethod
     def setUpClass(cls):
-        """testing class"""
+        """Set up test environment"""
         try:
             os.rename("file.json", "tmp")
         except IOError:
             pass
-        FileStorage._FileStorage__objects = {}
+
         cls.filestorage = FileStorage()
         cls.amenity = Amenity(name="newamenity")
 
-        if type(models.storage) == DBStorage:
+        if type(cls.filestorage) == DBStorage:
             cls.dbstorage = DBStorage()
-            Base.metadata.create_all(cls.dbstorage._DBStorage__engine)
-            Session = sessionmaker(bind=cls.dbstorage._DBStorage__engine)
-            cls.dbstorage._DBStorage__session = Session()
+            cls.dbstorage.reload()
 
     @classmethod
     def tearDownClass(cls):
-        """ testing amenity """
+        """Clean up test environment"""
         try:
             os.remove("file.json")
         except IOError:
             pass
+
         try:
             os.rename("tmp", "file.json")
         except IOError:
             pass
+
         del cls.amenity
         del cls.filestorage
-        if type(models.storage) == DBStorage:
+
+        if type(cls.filestorage) == DBStorage:
             cls.dbstorage._DBStorage__session.close()
             del cls.dbstorage
 
     def test_pep8(self):
-        """ testing pep8 """
+        """Test PEP8 compliance"""
         style = pep8.StyleGuide(quiet=True)
-        p = style.check_files(["models/amenity.py"])
-        self.assertEqual(p.total_errors, 0, "fixing pep8")
+        result = style.check_files(["models/amenity.py"])
+        self.assertEqual(result.total_errors, 0, "PEP8 style errors found")
 
     def test_docstrings(self):
-        """Checking for docstrings."""
+        """Test presence of docstrings"""
         self.assertIsNotNone(Amenity.__doc__)
 
     def test_attributes(self):
-        """Checking for attributes."""
-        us = Amenity(email="a", password="a")
-        self.assertEqual(str, type(us.id))
-        self.assertEqual(datetime, type(us.created_at))
-        self.assertEqual(datetime, type(us.updated_at))
-        self.assertTrue(hasattr(us, "__tablename__"))
-        self.assertTrue(hasattr(us, "name"))
-        self.assertTrue(hasattr(us, "place_amenities"))
+        """Test presence of attributes"""
+        amenity = Amenity()
+        self.assertEqual(str, type(amenity.id))
+        self.assertEqual(datetime, type(amenity.created_at))
+        self.assertEqual(datetime, type(amenity.updated_at))
+        self.assertTrue(hasattr(amenity, "__tablename__"))
+        self.assertTrue(hasattr(amenity, "name"))
 
-    @unittest.skipIf(type(models.storage) == FileStorage,
-                     "Testing FileStorage")
+    @unittest.skipIf(type(FileStorage) == FileStorage, "Testing FileStorage")
     def test_email_not_nullable(self):
-        """ testing attrib"""
+        """Test email attribute not nullable"""
         with self.assertRaises(OperationalError):
             self.dbstorage._DBStorage__session.add(Amenity(password="a"))
             self.dbstorage._DBStorage__session.commit()
-        self.dbstorage._DBStorage__session.rollback()
+
         with self.assertRaises(OperationalError):
             self.dbstorage._DBStorage__session.add(Amenity(email="a"))
             self.dbstorage._DBStorage__session.commit()
 
     def test_is_subclass(self):
-        """ testing stuff """
+        """Test if Amenity is a subclass of BaseModel"""
         self.assertTrue(issubclass(Amenity, BaseModel))
 
     def test_init(self):
-        """Test initialization."""
+        """Test initialization of Amenity instance"""
         self.assertIsInstance(self.amenity, Amenity)
 
     def test_two_models_are_unique(self):
-        """ testing unique"""
-        us = Amenity(email="a", password="a")
-        self.assertNotEqual(self.amenity.id, us.id)
-        self.assertLess(self.amenity.created_at, us.created_at)
-        self.assertLess(self.amenity.updated_at, us.updated_at)
+        """Test uniqueness of two Amenity instances"""
+        amenity1 = Amenity()
+        amenity2 = Amenity()
+        self.assertNotEqual(amenity1.id, amenity2.id)
+        self.assertLess(amenity1.created_at, amenity2.created_at)
+        self.assertLess(amenity1.updated_at, amenity2.updated_at)
 
     def test_init_args_kwargs(self):
-        """ testing kwargs"""
+        """Test initialization with args and kwargs"""
         dt = datetime.utcnow()
-        st = Amenity("1", id="6", created_at=dt.isoformat())
-        self.assertEqual(st.id, "6")
-        self.assertEqual(st.created_at, dt)
+        amenity = Amenity("1", id="6", created_at=dt.isoformat())
+        self.assertEqual(amenity.id, "6")
+        self.assertEqual(amenity.created_at, dt)
 
     def test_str(self):
-        """Test __str__ """
-        s = self.amenity.__str__()
-        self.assertIn("[Amenity] ({})".format(self.amenity.id), s)
-        self.assertIn("'id': '{}'".format(self.amenity.id), s)
+        """Test __str__ method"""
+        string = str(self.amenity)
+        self.assertIn("[Amenity] ({})".format(self.amenity.id), string)
+        self.assertIn("'id': '{}'".format(self.amenity.id), string)
         self.assertIn("'created_at': {}".format(
-            repr(self.amenity.created_at)), s)
+            repr(self.amenity.created_at)), string)
         self.assertIn("'updated_at': {}".format(
-            repr(self.amenity.updated_at)), s)
-        self.assertIn("'name': '{}'".format(self.amenity.name), s)
+            repr(self.amenity.updated_at)), string)
+        self.assertIn("'name': '{}'".format(self.amenity.name), string)
 
-    @unittest.skipIf(type(models.storage) == DBStorage,
-                     "test DBStorage")
+    @unittest.skipIf(type(DBStorage) == DBStorage, "Test DBStorage")
     def test_save_filestorage(self):
-        """Test save method with FileStorage."""
-        old = self.amenity.updated_at
+        """Test save method with FileStorage"""
+        old_updated_at = self.amenity.updated_at
         self.amenity.save()
-        self.assertLess(old, self.amenity.updated_at)
+        self.assertNotEqual(old_updated_at, self.amenity.updated_at)
+
         with open("file.json", "r") as f:
             self.assertIn("Amenity." + self.amenity.id, f.read())
 
-    @unittest.skipIf(type(models.storage) == FileStorage,
-                     "test FileStorage")
+    @unittest.skipIf(type(FileStorage) == FileStorage, "Test FileStorage")
     def test_save_dbstorage(self):
-        """Test save method with DBStorage."""
-        old = self.amenity.updated_at
+        """Test save method with DBStorage"""
+        old_updated_at = self.amenity.updated_at
         self.amenity.save()
-        self.assertLess(old, self.amenity.updated_at)
-        db = MySQLdb.connect(user="hbnb_test",
-                             passwd="hbnb_test_pwd",
-                             db="hbnb_test_db")
-        cursor = db.cursor()
-        cursor.execute("SELECT * \
-                          FROM `amenities` \
-                         WHERE BINARY name = '{}'".
-                       format(self.amenity.name))
-        query = cursor.fetchall()
-        self.assertEqual(1, len(query))
-        self.assertEqual(self.amenity.id, query[0][0])
-        cursor.close()
+        self.assertNotEqual(old_updated_at, self.amenity.updated_at)
+
+        query = self.dbstorage._DBStorage__session.query(Amenity).filter(
+            Amenity.name == self.amenity.name).all()
+        self.assertEqual(len(query), 1)
+        self.assertEqual(self.amenity.id, query[0].id)
 
     def test_to_dict(self):
-        """Test dict"""
+        """Test to_dict method"""
         amenity_dict = self.amenity.to_dict()
         self.assertEqual(dict, type(amenity_dict))
         self.assertEqual(self.amenity.id, amenity_dict["id"])

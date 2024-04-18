@@ -1,21 +1,25 @@
 #!/usr/bin/python3
-""" testing stuff yeah"""
-from tests.test_models.test_base_model import test_basemodel
+"""Testing State class"""
+
+import unittest
+from tests.test_models.test_base_model import TestBaseModel
 from models.state import State
 
 
-class test_state(test_basemodel):
-    """ testing stuff yeah"""
+class TestState(TestBaseModel):
+    """Testing State class"""
 
-    def __init__(self, *args, **kwargs):
-        """ testing stuff yeah"""
-        super().__init__(*args, **kwargs)
-        self.name = "State"
-        self.value = State
+    def setUp(self):
+        """Set up for test"""
+        self.state = State()
 
-    def test_name3(self):
-        """ testing stuff yeah"""
-        new = self.value()
+    def tearDown(self):
+        """Tear down after test"""
+        del self.state
+
+    def test_name(self):
+        """Test name attribute"""
+        new = self.state
         self.assertEqual(type(new.name), str)
 
 

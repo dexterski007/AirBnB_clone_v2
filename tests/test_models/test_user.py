@@ -1,36 +1,40 @@
 #!/usr/bin/python3
-""" testing stuff yeah"""
-from tests.test_models.test_base_model import test_basemodel
+"""Testing User class"""
+
+import unittest
+from tests.test_models.test_base_model import TestBaseModel
 from models.user import User
 
 
-class test_User(test_basemodel):
-    """ testing stuff yeah"""
+class TestUser(TestBaseModel):
+    """Testing User class"""
 
-    def __init__(self, *args, **kwargs):
-        """ testing stuff yeah"""
-        super().__init__(*args, **kwargs)
-        self.name = "User"
-        self.value = User
+    def setUp(self):
+        """Set up for test"""
+        self.user = User()
+
+    def tearDown(self):
+        """Tear down after test"""
+        del self.user
 
     def test_first_name(self):
-        """ testing stuff yeah"""
-        new = self.value()
+        """Test first_name attribute"""
+        new = self.user
         self.assertEqual(type(new.first_name), str)
 
     def test_last_name(self):
-        """ testing stuff yeah"""
-        new = self.value()
+        """Test last_name attribute"""
+        new = self.user
         self.assertEqual(type(new.last_name), str)
 
     def test_email(self):
-        """ testing stuff yeah"""
-        new = self.value()
+        """Test email attribute"""
+        new = self.user
         self.assertEqual(type(new.email), str)
 
     def test_password(self):
-        """ testing stuff yeah"""
-        new = self.value()
+        """Test password attribute"""
+        new = self.user
         self.assertEqual(type(new.password), str)
 
 

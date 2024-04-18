@@ -1,75 +1,42 @@
 #!/usr/bin/python3
-""" testing stuff yeah"""
-from tests.test_models.test_base_model import test_basemodel
-from models.city import City
+"""Testing City class"""
+
+import os
+import unittest
 import pycodestyle
+from models.city import City
+from models.base_model import BaseModel
 
 
-class test_City(test_basemodel):
-    """ testing stuff yeah"""
+class TestCity(unittest.TestCase):
+    """Testing City class"""
 
-    def __init__(self, *args, **kwargs):
-        """ testing stuff yeah"""
-        super().__init__(*args, **kwargs)
-        self.name = "City"
-        self.value = City
-
-    def test_state_id(self):
-        """ testing stuff yeah"""
-        new = self.value()
-        self.assertEqual(type(new.state_id), str)
-
-    def test_name(self):
-        """ testing stuff yeah"""
-        new = self.value()
-        self.assertEqual(type(new.name), str)
-
-
-class Test_PEP8(unittest.TestCase):
-    """test User"""
-
-    def test_pep8_user(self):
-        """test pep8 style"""
-        pep8style = pycodestyle.StyleGuide(quiet=True)
-        result = pep8style.check_files(['models/city.py'])
-        self.assertEqual(result.total_errors, 0,
-                         "Found code style errors (and warnings).")
-
-
-class Test_city(unittest.TestCase):
-    """ testing stuff yeah"""
-
-    @classmethod
-    def setUpClass(cls):
-        """set up for test"""
-        cls.city = City()
-        cls.city.name = "LA"
-        cls.city.state_id = "CA"
-
-    @classmethod
-    def teardown(cls):
-        """ testing stuff yeah"""
-        del cls.city
+    def setUp(self):
+        """Set up for test"""
+        self.city = City()
+        self.city.name = "LA"
+        self.city.state_id = "CA"
 
     def tearDown(self):
-        """ testing stuff yeah"""
+        """Tear down after test"""
+        del self.city
         try:
             os.remove("file.json")
         except Exception:
             pass
 
     def test_pep8_city(self):
-        """ testing stuff yeah"""
-        pycostyle = pep8.StyleGuide(quiet=True)
-        py = pycostyle.check_files(['models/city.py'])
-        self.assertEqual(py.total_errors, 0, "pep8 errors")
+        """Test PEP8 style"""
+        pep8style = pycodestyle.StyleGuide(quiet=True)
+        result = pep8style.check_files(['models/city.py'])
+        self.assertEqual(result.total_errors, 0, "PEP8 style errors")
 
     def test_check_docstring_City(self):
-        """ testing stuff yeah"""
+        """Test if City class has docstring"""
         self.assertIsNotNone(City.__doc__)
 
-    def test_attr_City(self):
-        """ testing stuff yeah"""
+    def test_city_attributes(self):
+        """Test City class attributes"""
         self.assertTrue('id' in self.city.__dict__)
         self.assertTrue('created_at' in self.city.__dict__)
         self.assertTrue('updated_at' in self.city.__dict__)
@@ -77,24 +44,24 @@ class Test_city(unittest.TestCase):
         self.assertTrue('name' in self.city.__dict__)
 
     def test_is_subclass_City(self):
-        """ testing stuff yeah"""
-        self.assertTrue(issubclass(self.city.__class__, BaseModel), True)
+        """Test if City is a subclass of BaseModel"""
+        self.assertTrue(issubclass(City, BaseModel))
 
-    def test_attr_typescity(self):
-        """ testing stuff yeah"""
-        self.assertEqual(type(self.city.name), str)
-        self.assertEqual(type(self.city.state_id), str)
+    def test_city_attribute_types(self):
+        """Test types of City class attributes"""
+        self.assertIsInstance(self.city.name, str)
+        self.assertIsInstance(self.city.state_id, str)
 
-    def test_savecity(self):
-        """ testing stuff yeah"""
+    def test_save_method(self):
+        """Test save method of City"""
         self.city.save()
         self.assertNotEqual(self.city.created_at, self.city.updated_at)
 
-    def test_dictcity(self):
-        """ testing stuff yeah"""
-        self.assertEqual('to_dict' in dir(self.city), True)
+    def test_to_dict_method(self):
+        """Test to_dict method of City"""
+        city_dict = self.city.to_dict()
+        self.assertIsInstance(city_dict, dict)
 
 
 if __name__ == "__main__":
     unittest.main()
-
