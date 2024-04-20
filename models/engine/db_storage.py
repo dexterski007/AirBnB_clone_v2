@@ -20,7 +20,7 @@ class DBStorage:
     __session = None
 
     def __init__(self):
-
+        """ init method for db storage """
         user = getenv("HBNB_MYSQL_USER")
         password = getenv("HBNB_MYSQL_PWD")
         host = getenv("HBNB_MYSQL_HOST")

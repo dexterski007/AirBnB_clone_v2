@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ testing amenity """
-
+from os import getenv
 from datetime import datetime
 import inspect
 import models
@@ -19,7 +19,7 @@ class TestAmenityDocs(unittest.TestCase):
         cls.amenity_f = inspect.getmembers(Amenity, inspect.isfunction)
 
     def test_pep8_conformance_amenity(self):
-        """Test  PEP8."""
+        """Test dfdfdfdfEP8."""
         pep8s = pep8.StyleGuide(quiet=True)
         result = pep8s.check_files(['models/amenity.py'])
         self.assertEqual(result.total_errors, 0,
@@ -69,10 +69,7 @@ class TestAmenity(unittest.TestCase):
         """Test  string"""
         amenity = Amenity()
         self.assertTrue(hasattr(amenity, "name"))
-        if models.storage == 'db':
-            self.assertEqual(amenity.name, None)
-        else:
-            self.assertEqual(amenity.name, "")
+        self.assertEqual(amenity.name, None)
 
     def test_to_dict_creates_dict(self):
         """test to_dict  attrs"""

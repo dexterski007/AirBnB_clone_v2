@@ -71,19 +71,13 @@ class TestCity(unittest.TestCase):
         """Test that City has attribute name, and it's an empty string"""
         city = City()
         self.assertTrue(hasattr(city, "name"))
-        if models.storage == 'db':
-            self.assertEqual(city.name, None)
-        else:
-            self.assertEqual(city.name, "")
+        self.assertEqual(city.name, None)
 
     def test_state_id_attr(self):
         """Test that City has attribute state_id, and it's an empty string"""
         city = City()
         self.assertTrue(hasattr(city, "state_id"))
-        if getenv("HBNB_TYPE_STORAGE") == 'db':
-            self.assertEqual(city.state_id, None)
-        else:
-            self.assertEqual(city.state_id, "")
+        self.assertEqual(city.state_id, None)
 
     def test_to_dict_creates_dict(self):
         """test to_dict method creates a dictionary with proper attrs"""
