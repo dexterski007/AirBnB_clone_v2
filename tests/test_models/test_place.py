@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""
-Contains the TestPlaceDocs classes
-"""
+""" testing yeah """
 
 from datetime import datetime
 import inspect

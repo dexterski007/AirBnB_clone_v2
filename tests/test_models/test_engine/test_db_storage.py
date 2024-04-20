@@ -1,8 +1,5 @@
 #!/usr/bin/python3
-"""
-Contains the TestDBStorageDocs and TestDBStorage classes
-"""
-
+""" testing yeah """
 from datetime import datetime
 import inspect
 import models
