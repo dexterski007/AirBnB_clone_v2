@@ -8,13 +8,14 @@ sudo mkdir -p /data/web_static/
 sudo mkdir -p /data/web_static/releases/
 sudo mkdir -p /data/web_static/releases/test/
 sudo mkdir -p /data/web_static/shared/
-sudo sh -c 'echo "<html>
+sudo touch /data/web_static/releases/test/index.html
+sudo echo "<html>
   <head>
   </head>
   <body>
     Holberton School
   </body>
-</html>" > /data/web_static/releases/test/index.html'
+</html>" | sudo tee /data/web_static/releases/test/index.html
 rm -rf /data/web_static/current
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 sudo chown -R ubuntu:ubuntu /data/
