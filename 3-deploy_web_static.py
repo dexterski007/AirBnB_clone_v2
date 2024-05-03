@@ -24,7 +24,7 @@ def do_pack():
               .format(arcpath, os.path.getsize(arcpath)))
         return arcpath
     except Exception:
-        return False
+        return None
 
 
 @task
@@ -55,6 +55,6 @@ def do_deploy(archive_path):
 def deploy():
     """ pack and deploy"""
     path_arc = do_pack()
-    if not path_arc:
+    if path_arc is None:
         return False
     return do_deploy(path_arc)
