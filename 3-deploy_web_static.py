@@ -36,12 +36,14 @@ def do_deploy(archive_path):
         folder = "/data/web_static/releases"
         put(archive_path, "/tmp/")
         sudo("mkdir -p {}/{}".format(folder, archive_name))
+        sudo("mkdir -p /data/web_static/shared/")
         sudo("tar -xzf /tmp/{} -C /data/web_static/releases/{}/"
              .format(archive_fname, archive_name))
         sudo("rm /tmp/{}".format(archive_fname))
         sudo("mv {0}/{1}/web_static/* {0}/{1}/".format(folder, archive_name))
         sudo("rm -rf {}/{}/web_static".format(folder, archive_name))
         sudo("rm -rf /data/web_static/current")
+        sudo("chown -R ubuntu:ubuntu /data")
         sudo("chmod +777 -R /data")
         sudo("ln -s /data/web_static/releases/{}/ /data/web_static/current"
              .format(archive_name))
