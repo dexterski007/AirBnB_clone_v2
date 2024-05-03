@@ -42,6 +42,7 @@ def do_deploy(archive_path):
         sudo("mv {0}/{1}/web_static/* {0}/{1}/".format(folder, archive_name))
         sudo("rm -rf {}/{}/web_static".format(folder, archive_name))
         sudo("rm -rf /data/web_static/current")
+        sudo("chmod +777 -R /data")
         sudo("ln -s /data/web_static/releases/{}/ /data/web_static/current"
              .format(archive_name))
         print("New version deployed!")
