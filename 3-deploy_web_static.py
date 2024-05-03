@@ -17,31 +17,37 @@ def do_pack():
     arcpath = "versions/" + archive_name
     local("mkdir -p versions")
     print("Packing web_static to {}".format(arcpath))
-    if local("tar -cvzf versions/{} web_static"
-             .format(archive_name)).succeeded:
+    try:
+        local("tar -cvzf versions/{} web_static"
+              .format(archive_name)).succeeded:
         print("web_static packed: {} -> {}Bytes"
               .format(arcpath, os.path.getsize(arcpath)))
         return arcpath
-    return None
+    except Exception:
+        raise
+    
 
 
 @runs_once
 def do_alx(archive_path):
-    archive_fname = os.path.basename(archive_path)
-    archive_name = archive_fname.split(".")[0]
-    folder = "/data/web_static/releases"
-    local("cp {} /tmp/{}".format(archive_path, archive_fname))
-    local("mkdir -p {}/{}".format(folder, archive_name))
-    local("mkdir -p /data/web_static/shared/")
-    local("tar -xzf /tmp/{} -C /data/web_static/releases/{}/"
-          .format(archive_fname, archive_name))
-    local("rm /tmp/{}".format(archive_fname))
-    local("mv {0}/{1}/web_static/* {0}/{1}/".format(folder, archive_name))
-    local("rm -rf {}/{}/web_static".format(folder, archive_name))
-    local("rm -rf /data/web_static/current")
-    local("ln -s /data/web_static/releases/{}/ /data/web_static/current"
-          .format(archive_name))
-    return
+    try:
+        archive_fname = os.path.basename(archive_path)
+        archive_name = archive_fname.split(".")[0]
+        folder = "/data/web_static/releases"
+        local("cp {} /tmp/{}".format(archive_path, archive_fname))
+        local("mkdir -p {}/{}".format(folder, archive_name))
+        local("mkdir -p /data/web_static/shared/")
+        local("tar -xzf /tmp/{} -C /data/web_static/releases/{}/"
+              .format(archive_fname, archive_name))
+        local("rm /tmp/{}".format(archive_fname))
+        local("mv {0}/{1}/web_static/* {0}/{1}/".format(folder, archive_name))
+        local("rm -rf {}/{}/web_static".format(folder, archive_name))
+        local("rm -rf /data/web_static/current")
+        local("ln -s /data/web_static/releases/{}/ /data/web_static/current"
+              .format(archive_name))
+        return
+    except Exception:
+        raise
 
 
 @task
@@ -68,7 +74,7 @@ def do_deploy(archive_path):
         print("New version deployed!")
         return True
     except Exception:
-        return False
+        raise
 
 
 @task
