@@ -38,7 +38,8 @@ file { '/data/web_static/releases/test/index.html':
   <body>
     Holberton School
   </body>
-</html>",
+</html>
+",
   require => Package['nginx'],
 }
 
