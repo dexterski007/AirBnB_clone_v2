@@ -7,43 +7,42 @@ import os
 
 env.hosts = ["100.25.41.53", "52.3.253.7"]
 
-
 @runs_once
 def do_pack():
-    """ pack as tgz archive """
-    current_time = datetime.datetime.now()
-    formatted = current_time.strftime("%Y%m%d%H%M%S")
-    archive_name = "web_static_{}.tgz".format(formatted)
-    arcpath = "versions/" + archive_name
-    local("mkdir -p versions")
-    print("Packing web_static to {}".format(arcpath))
-    if local("tar -cvzf versions/{} web_static"
-             .format(archive_name)).succeeded:
-        print("web_static packed: {} -> {}Bytes"
-              .format(arcpath, os.path.getsize(arcpath)))
-        return arcpath
+    """ method doc
+        sudo fab -f 1-pack_web_static.py do_pack
+    """
+    formatted_dt = datetime.now().strftime('%Y%m%d%H%M%S')
+    mkdir = "mkdir -p versions"
+    path = "versions/web_static_{}.tgz".format(formatted_dt)
+    print("Packing web_static to {}".format(path))
+    if local("{} && tar -cvzf {} web_static".format(mkdir, path)).succeeded:
+        return path
     return None
 
 
 @task
 def do_deploy(archive_path):
-    """ deploy tgz archive """
+    """ method doc
+        fab -f 2-do_deploy_web_static.py do_deploy:
+        archive_path=versions/web_static_20231004201306.tgz
+        -i ~/.ssh/id_rsa -u ubuntu
+    """
     try:
         if not os.path.exists(archive_path):
             return False
-        archive_fname = os.path.basename(archive_path)
-        archive_name = archive_fname.split(".")[0]
-        folder = "/data/web_static/releases"
+        fn_with_ext = os.path.basename(archive_path)
+        fn_no_ext, ext = os.path.splitext(fn_with_ext)
+        dpath = "/data/web_static/releases/"
         put(archive_path, "/tmp/")
-        run("mkdir -p {}/{}".format(folder, archive_name))
-        run("tar -xzf /tmp/{} -C /data/web_static/releases/{}/"
-            .format(archive_fname, archive_name))
-        run("rm /tmp/{}".format(archive_fname))
-        run("mv {0}/{1}/web_static/* {0}/{1}/".format(folder, archive_name))
-        run("rm -rf {}/{}/web_static".format(folder, archive_name))
+        run("rm -rf {}{}/".format(dpath, fn_no_ext))
+        run("mkdir -p {}{}/".format(dpath, fn_no_ext))
+        run("tar -xzf /tmp/{} -C {}{}/".format(fn_with_ext, dpath, fn_no_ext))
+        run("rm /tmp/{}".format(fn_with_ext))
+        run("mv {0}{1}/web_static/* {0}{1}/".format(dpath, fn_no_ext))
+        run("rm -rf {}{}/web_static".format(dpath, fn_no_ext))
         run("rm -rf /data/web_static/current")
-        run("ln -s /data/web_static/releases/{}/ /data/web_static/current"
-            .format(archive_name))
+        run("ln -s {}{}/ /data/web_static/current".format(dpath, fn_no_ext))
         print("New version deployed!")
         return True
     except Exception:
@@ -52,8 +51,10 @@ def do_deploy(archive_path):
 
 @task
 def deploy():
-    """ pack and deploy"""
-    path_arc = do_pack()
-    if path_arc is None:
+    """ method doc
+        sudo fab -f 1-pack_web_static.py do_pack
+    """
+    path = do_pack()
+    if path is None:
         return False
-    return do_deploy(path_arc)
+    return do_deploy(path)
