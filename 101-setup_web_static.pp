@@ -33,6 +33,11 @@ file { '/data/web_static/current':
   force   => true,
 }
 
+file { '/var/www/html/404.html':
+  ensure  => 'present',
+  content => "Ceci n'est pas une page\n"
+}
+
 file { '/data/web_static/releases/test/index.html':
   ensure  => present,
   content => "<html>
@@ -66,6 +71,11 @@ server {
 
     location / {
         try_files \$uri \$uri/ =404;
+    }
+    error_page 404 /404.html;
+    location /404 {
+      root /var/www/html;
+      internal;
     }
 }
 ",
