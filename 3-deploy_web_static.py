@@ -15,11 +15,14 @@ def do_pack():
         current_time = datetime.datetime.now()
         formatted = current_time.strftime("%Y%m%d%H%M%S")
         archive_name = "web_static_{}.tgz".format(formatted)
-        local("mkdir -p ./versions")
-        local("tar -cvzf ./versions/{} \
-              ./web_static".format(archive_name))
-        path = "versions/" + archive_name
-        return path
+        arcpath = "versions/" + archive_name
+        local("mkdir -p versions")
+        print("Packing web_static to {}".format(arcpath))
+        local("tar -cvzf versions/{} web_static"
+              .format(archive_name))
+        print("web_static packed: {} -> {}Bytes".format(arcpath,
+               os.path.getsize(arcpath)))
+        return arcpath
     except Exception:
         return False
 
@@ -35,7 +38,7 @@ def do_deploy(archive_path):
         archive_name = archive_fname.split('.')[0]
         folder = '/data/web_static/releases'
         run('mkdir -p {}/{}'.format(folder, archive_name))
-        run('tar -xzf /tmp/{} -C /data/web_static/releases/{}'
+        run('tar -xzf /tmp/{} -C /data/web_static/releases/{}/'
             .format(archive_fname, archive_name))
         run('mv {0}/{1}/web_static/* {0}/{1}/'.format(folder, archive_name))
         run('rm /tmp/{}'.format(archive_fname))
