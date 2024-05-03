@@ -34,7 +34,8 @@ file { '/data/web_static/current':
 
 file { '/data/web_static/releases/test/index.html':
   ensure  => present,
-  content => "<html>
+  content => "
+<html>
   <head>
   </head>
   <body>
