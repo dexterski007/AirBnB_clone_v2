@@ -21,6 +21,7 @@ file { [
   owner  => 'ubuntu',
   group  => 'ubuntu',
   recurse => true,
+  force   => true,
 }
 
 file { '/data/web_static/current':
@@ -29,6 +30,7 @@ file { '/data/web_static/current':
   owner   => 'ubuntu',
   group   => 'ubuntu',
   require => File['/data/web_static/releases/test/'],
+  force   => true,
 }
 
 file { '/data/web_static/releases/test/index.html':
@@ -42,6 +44,7 @@ file { '/data/web_static/releases/test/index.html':
 </html>
 ",
   require => Package['nginx'],
+  force   => true,
 }
 
 file { '/etc/nginx/sites-available/default':
