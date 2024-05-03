@@ -24,6 +24,7 @@ def do_pack():
         return arcpath
     return None
 
+
 @runs_once
 def do_alx(archive_path):
     archive_fname = os.path.basename(archive_path)
@@ -41,6 +42,7 @@ def do_alx(archive_path):
     local("ln -s /data/web_static/releases/{}/ /data/web_static/current"
           .format(archive_name))
     return
+
 
 @task
 def do_deploy(archive_path):
