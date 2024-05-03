@@ -24,6 +24,23 @@ def do_pack():
         return arcpath
     return None
 
+@runs_once
+def do_alx(archive_path):
+    archive_fname = os.path.basename(archive_path)
+    archive_name = archive_fname.split(".")[0]
+    folder = "/data/web_static/releases"
+    local("cp {} /tmp/{}".format(archive_path, archive_fname))
+    local("mkdir -p {}/{}".format(folder, archive_name))
+    local("mkdir -p /data/web_static/shared/")
+    local("tar -xzf /tmp/{} -C /data/web_static/releases/{}/"
+          .format(archive_fname, archive_name))
+    local("rm /tmp/{}".format(archive_fname))
+    local("mv {0}/{1}/web_static/* {0}/{1}/".format(folder, archive_name))
+    local("rm -rf {}/{}/web_static".format(folder, archive_name))
+    local("rm -rf /data/web_static/current")
+    local("ln -s /data/web_static/releases/{}/ /data/web_static/current"
+          .format(archive_name))
+    return
 
 @task
 def do_deploy(archive_path):
@@ -39,13 +56,13 @@ def do_deploy(archive_path):
         sudo("chown -R ubuntu:ubuntu /data")
         run("mkdir -p /data/web_static/shared/")
         run("tar -xzf /tmp/{} -C /data/web_static/releases/{}/"
-             .format(archive_fname, archive_name))
+            .format(archive_fname, archive_name))
         run("rm /tmp/{}".format(archive_fname))
         run("mv {0}/{1}/web_static/* {0}/{1}/".format(folder, archive_name))
         run("rm -rf {}/{}/web_static".format(folder, archive_name))
         run("rm -rf /data/web_static/current")
         run("ln -s /data/web_static/releases/{}/ /data/web_static/current"
-             .format(archive_name))
+            .format(archive_name))
         print("New version deployed!")
         return True
     except Exception:
@@ -58,4 +75,5 @@ def deploy():
     path_arc = do_pack()
     if path_arc is None:
         return False
+    do_alx(path_arc)
     return do_deploy(path_arc)
