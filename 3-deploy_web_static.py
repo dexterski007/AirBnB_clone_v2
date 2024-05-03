@@ -7,6 +7,7 @@ import os
 
 env.hosts = ['web-01.bmworks.tech', 'web-02.bmworks.tech']
 
+
 @task
 def do_pack():
     """ pack as tgz archive """
@@ -21,6 +22,7 @@ def do_pack():
         return path
     except Exception:
         return False
+
 
 @task
 def do_deploy(archive_path):
@@ -44,6 +46,7 @@ def do_deploy(archive_path):
         return True
     except Exception:
         return False
+
 
 @task
 def deploy():
