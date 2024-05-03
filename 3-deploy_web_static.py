@@ -20,8 +20,8 @@ def do_pack():
         print("Packing web_static to {}".format(arcpath))
         local("tar -cvzf versions/{} web_static"
               .format(archive_name))
-        print("web_static packed: {} -> {}Bytes".format(arcpath,
-               os.path.getsize(arcpath)))
+        print("web_static packed: {} -> {}Bytes"
+              .format(arcpath, os.path.getsize(arcpath)))
         return arcpath
     except Exception:
         return False
