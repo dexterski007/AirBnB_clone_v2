@@ -18,7 +18,7 @@ def do_pack():
         local("mkdir -p ./versions")
         local("tar -cvzf ./versions/{} \
               ./web_static".format(archive_name))
-        path = "./versions/" + archive_name
+        path = "versions/" + archive_name
         return path
     except Exception:
         return False
