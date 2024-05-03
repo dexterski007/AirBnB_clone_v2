@@ -1,1 +1,1 @@
-#web static task
+This directory implements webpage design.

@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ deploy web_static as archive """
-from fabric.api import run, put, task, env, local
+from fabric.api import run, put, task, env, local, runs_once
 import datetime
 import os
 
@@ -8,7 +8,7 @@ import os
 env.hosts = ['web-01.bmworks.tech', 'web-02.bmworks.tech']
 
 
-@task
+@runs_once
 def do_pack():
     """ pack as tgz archive """
     try:
