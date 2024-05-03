@@ -11,32 +11,30 @@ env.hosts = ['web-01.bmworks.tech', 'web-02.bmworks.tech']
 @runs_once
 def do_pack():
     """ pack as tgz archive """
-    try:
-        current_time = datetime.datetime.now()
-        formatted = current_time.strftime("%Y%m%d%H%M%S")
-        archive_name = "web_static_{}.tgz".format(formatted)
-        arcpath = "versions/" + archive_name
-        local("mkdir -p versions")
-        print("Packing web_static to {}".format(arcpath))
-        local("tar -cvzf versions/{} web_static"
-              .format(archive_name))
+    current_time = datetime.datetime.now()
+    formatted = current_time.strftime("%Y%m%d%H%M%S")
+    archive_name = "web_static_{}.tgz".format(formatted)
+    arcpath = "versions/" + archive_name
+    local("mkdir -p versions")
+    print("Packing web_static to {}".format(arcpath))
+    if local("tar -cvzf versions/{} web_static"
+          .format(archive_name)).succeeded:
         print("web_static packed: {} -> {}Bytes"
               .format(arcpath, os.path.getsize(arcpath)))
         return arcpath
-    except Exception:
-        return None
+    return None
 
 
 @task
 def do_deploy(archive_path):
     """ deploy tgz archive """
-    if not os.path.exists(archive_path):
-        return False
     try:
-        put(archive_path, '/tmp/')
+        if not os.path.exists(archive_path):
+            return False
         archive_fname = os.path.basename(archive_path)
         archive_name = archive_fname.split('.')[0]
         folder = '/data/web_static/releases'
+        put(archive_path, '/tmp/')
         run('mkdir -p {}/{}'.format(folder, archive_name))
         run('tar -xzf /tmp/{} -C /data/web_static/releases/{}/'
             .format(archive_fname, archive_name))
