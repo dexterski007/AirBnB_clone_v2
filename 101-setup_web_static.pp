@@ -29,13 +29,11 @@ file { '/data/web_static/current':
   owner   => 'ubuntu',
   group   => 'ubuntu',
   require => File['/data/web_static/releases/test/'],
-  recurse => true,
 }
 
 file { '/data/web_static/releases/test/index.html':
   ensure  => present,
-  content => "
-<html>
+  content => "<html>
   <head>
   </head>
   <body>
@@ -44,8 +42,6 @@ file { '/data/web_static/releases/test/index.html':
 </html>
 ",
   require => Package['nginx'],
-  owner   => 'ubuntu',
-  group   => 'ubuntu',
 }
 
 file { '/etc/nginx/sites-available/default':
