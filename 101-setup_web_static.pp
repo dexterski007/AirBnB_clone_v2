@@ -32,7 +32,13 @@ file { '/data/web_static/current':
 
 file { '/data/web_static/releases/test/index.html':
   ensure  => present,
-  content => 'Hello World!',
+  content => "<html>
+  <head>
+  </head>
+  <body>
+    Holberton School
+  </body>
+</html>",
   require => Package['nginx'],
 }
 
