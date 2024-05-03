@@ -18,16 +18,11 @@ file { [
   '/data/web_static/releases/test/',
 ]:
   ensure => directory,
-  owner  => 'ubuntu',
-  group  => 'ubuntu',
 }
 
 file { '/data/web_static/current':
   ensure  => link,
   target  => '/data/web_static/releases/test/',
-  owner   => 'ubuntu',
-  group   => 'ubuntu',
-  require => File['/data/web_static/releases/test/'],
 }
 
 file { '/data/web_static/releases/test/index.html':
@@ -48,6 +43,7 @@ file { '/etc/nginx/sites-available/default':
   content => "
 server {
     listen 80 default_server;
+    add_header X-Served-By $hostname;
     listen [::]:80 default_server;
     rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;
     root /var/www/html;
