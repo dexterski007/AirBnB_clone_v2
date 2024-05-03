@@ -84,7 +84,11 @@ def deploy():
 @runs_once
 def local_clean(number):
     """ remove local versions """
-    local("ls -dt versions/* | tail -n +{} | sudo xargs rm -rf".format(number))
+    try:
+        local("ls -dt versions/* | tail -n +{} | sudo xargs rm -rf"
+              .format(number))
+    except Exception:
+        raise
 
 
 @task
@@ -93,7 +97,10 @@ def do_clean(number=0):
     if int(number) == 0:
         number = 1
     number = int(number) + 1
-    local_clean(number)
-    folderpath = "/data/web_static/releases/*"
-    run("ls -dt {} | tail -n +{} | sudo xargs rm -rf"
-        .format(folderpath, number))
+    try:
+        local_clean(number)
+        folderpath = "/data/web_static/releases/*"
+        run("ls -dt {} | tail -n +{} | sudo xargs rm -rf"
+            .format(folderpath, number))
+    except Exception:
+        return False
