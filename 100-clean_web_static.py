@@ -95,4 +95,4 @@ def do_clean(number=0):
     number = int(number) + 1
     local_clean(number)
     folderpath = "/data/web_static/releases/*"
-    sudo("ls -dt {} | tail -n +{} | xargs rm -rf".format(folderpath, number))
+    run("ls -dt {} | tail -n +{} | sudo xargs rm -rf".format(folderpath, number))
