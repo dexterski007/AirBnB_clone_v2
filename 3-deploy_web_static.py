@@ -1,11 +1,12 @@
 #!/usr/bin/python3
 """ deploy web_static as archive """
 from fabric.api import run, put, task, env, local, runs_once
-import datetime
+from datetime import datetime
 import os
 
 
 env.hosts = ["100.25.41.53", "52.3.253.7"]
+
 
 @runs_once
 def do_pack():
