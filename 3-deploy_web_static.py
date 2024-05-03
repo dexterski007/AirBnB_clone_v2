@@ -5,7 +5,7 @@ import datetime
 import os
 
 
-env.hosts = ['web-01.bmworks.tech', 'web-02.bmworks.tech']
+env.hosts = ["100.25.41.53", "52.3.253.7"]
 
 
 @runs_once
@@ -18,7 +18,7 @@ def do_pack():
     local("mkdir -p versions")
     print("Packing web_static to {}".format(arcpath))
     if local("tar -cvzf versions/{} web_static"
-          .format(archive_name)).succeeded:
+             .format(archive_name)).succeeded:
         print("web_static packed: {} -> {}Bytes"
               .format(arcpath, os.path.getsize(arcpath)))
         return arcpath
@@ -32,17 +32,17 @@ def do_deploy(archive_path):
         if not os.path.exists(archive_path):
             return False
         archive_fname = os.path.basename(archive_path)
-        archive_name = archive_fname.split('.')[0]
-        folder = '/data/web_static/releases'
-        put(archive_path, '/tmp/')
-        run('mkdir -p {}/{}'.format(folder, archive_name))
-        run('tar -xzf /tmp/{} -C /data/web_static/releases/{}/'
+        archive_name = archive_fname.split(".")[0]
+        folder = "/data/web_static/releases"
+        put(archive_path, "/tmp/")
+        run("mkdir -p {}/{}".format(folder, archive_name))
+        run("tar -xzf /tmp/{} -C /data/web_static/releases/{}/"
             .format(archive_fname, archive_name))
-        run('rm /tmp/{}'.format(archive_fname))
-        run('mv {0}/{1}/web_static/* {0}/{1}/'.format(folder, archive_name))
-        run('rm -rf {}/{}/web_static'.format(folder, archive_name))
-        run('rm -rf /data/web_static/current')
-        run('ln -s /data/web_static/releases/{}/ /data/web_static/current'
+        run("rm /tmp/{}".format(archive_fname))
+        run("mv {0}/{1}/web_static/* {0}/{1}/".format(folder, archive_name))
+        run("rm -rf {}/{}/web_static".format(folder, archive_name))
+        run("rm -rf /data/web_static/current")
+        run("ln -s /data/web_static/releases/{}/ /data/web_static/current"
             .format(archive_name))
         print("New version deployed!")
         return True
