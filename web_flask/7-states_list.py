@@ -59,6 +59,7 @@ def isnum_even(n):
 
 @app.teardown_appcontext
 def teardown_db(exception):
+    """ teardown function """
     storage.close()
 
 
