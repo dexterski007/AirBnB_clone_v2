@@ -71,3 +71,7 @@ class DBStorage:
         """ delete object """
         if obj:
             self.__session.delete(obj)
+
+    def close(self):
+        """ calls reload """
+        self.__session.close()
