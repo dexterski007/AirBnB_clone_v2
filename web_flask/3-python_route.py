@@ -11,15 +11,18 @@ def hello_world():
     """ hello world"""
     return 'Hello HBNB!'
 
+
 @app.route('/hbnb', strict_slashes=False)
 def hbnb_page():
     """ hbnb """
     return 'HBNB'
 
+
 @app.route('/c/<text>', strict_slashes=False)
 def cisfun(text):
     """ c + fun"""
     return f'C {text.replace("_"," ")}'
+
 
 @app.route('/python', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
