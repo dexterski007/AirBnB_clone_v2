@@ -57,17 +57,17 @@ def isnum_even(n):
     return render_template('6-number_odd_or_even.html', n=n, check=check)
 
 
-@app.teardown_appcontext
-def teardown_db(exception):
-    """ teardown function """
-    storage.close()
-
-
 @app.route('/states_list', strict_slashes=False)
 def stateslist():
     """ dbs are not cool """
     states = storage.all(State)
     return render_template('7-states_list.html', states=states)
+
+
+@app.teardown_appcontext
+def teardown_db(exception):
+    """ teardown function """
+    storage.close()
 
 
 if __name__ == '__main__':
