@@ -46,7 +46,7 @@ class BaseModel:
         return '[{}] ({}) {}'.format(
             type(self).__name__, self.id, self.__dict__)
 
-    def _repr__(self):
+    def __repr__(self):
         """ return a string representation of the instance """
         return self.__str__()
 

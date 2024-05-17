@@ -24,7 +24,7 @@ class State(BaseModel, Base):
         for k in bulk:
             city = k.replace('.', ' ')
             city = shlex.split(city)
-            if (city[0] == 'city'):
+            if (city[0] == 'City'):
                 elist.append(bulk[k])
         for el in elist:
             if (el.state_id == self.id):
